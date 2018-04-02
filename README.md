@@ -1,6 +1,6 @@
 # bin2vhdl
 
-Convert binary files to VHDL source files.
+Convert binary files to VHDL source files or to Altera Memory Initialization Format (MIF) files.
 
     Usage: bin2vhdl [options] source.bin
     Options:
@@ -12,6 +12,7 @@ Convert binary files to VHDL source files.
           --w32                  Write 32 bit values.
       -b, --big-endian           Big endian data (the default).
       -l, --little-endian        Little endian data.
+      --mif                      Generate a MIF file instead of VHDL.
 
 For example:
 
