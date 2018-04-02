@@ -23,7 +23,7 @@ namespace Converter
                 throw new ArgumentException(ex.Message, ex);
             }
 
-            if (Action == Actions.Convert)
+            if (Action != Actions.ShowHelp)
             {
                 if (extra.Count != 1)
                 {
@@ -33,7 +33,7 @@ namespace Converter
                 SourceFileName = extra[0];
                 if (OutputFileName == null)
                 {
-                    OutputFileName = Path.ChangeExtension(SourceFileName, ".vhdl");
+                    OutputFileName = Path.ChangeExtension(SourceFileName, Action == Actions.ConvertToVhdl ? ".vhdl" : ".mif");
                 }
                 if (PackageName == null)
                 {
@@ -45,10 +45,11 @@ namespace Converter
         public enum Actions
         {
             ShowHelp,
-            Convert,
+            ConvertToVhdl,
+            ConvertToMif,
         }
 
-        public Actions Action { get; private set; } = Actions.Convert;
+        public Actions Action { get; private set; } = Actions.ConvertToVhdl;
         public string SourceFileName { get; private set; }
         public string OutputFileName { get; private set; }
         public string PackageName { get; private set; }
@@ -65,6 +66,7 @@ namespace Converter
             { "w32", "Write 32 bit values.", x => Width = 32 },
             { "b|big-endian", "Big endian data (the default).", x => Endian = Endian.Big },
             { "l|little-endian", "Little endian data.", x => Endian = Endian.Little },
+            { "mif", "Generate a MIF file instead of VHDL.", x => Action = Actions.ConvertToMif }
         };
 
         public void Describe(TextWriter writer)

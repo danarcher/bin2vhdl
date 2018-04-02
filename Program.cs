@@ -32,8 +32,19 @@ namespace Converter
             try
             {
                 var binary = File.ReadAllBytes(options.SourceFileName);
-                var vhdl = VhdlConverter.Convert(binary, options.PackageName, options.Width, options.Endian);
-                File.WriteAllText(options.OutputFileName, vhdl);
+                string text;
+                switch (options.Action)
+                {
+                    case Options.Actions.ConvertToVhdl:
+                        text = VhdlConverter.Convert(binary, options.PackageName, options.Width, options.Endian);
+                        break;
+                    case Options.Actions.ConvertToMif:
+                        text = MifConverter.Convert(binary, options.Width, options.Endian);
+                        break;
+                    default:
+                        throw new NotImplementedException($"{options.Action} not implemented");
+                }
+                File.WriteAllText(options.OutputFileName, text);
                 return Success;
             }
             catch (Exception ex)
